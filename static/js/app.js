@@ -12,26 +12,41 @@ var tableBody = d3.select("tbody");
 
 // Define input sources
 var button = d3.select("#filter-btn");
-var inputField = d3.select("#datetime");
-
-// Print source data for reference
-console.log(`Source Data: ${tableData}`);
+var inputElement = d3.select("#datetime");
+var inputHTML = inputElement.html();
+var inputText = inputElement.text();
 
 // Click handler
 function handleClick(date) {
-  data.forEach(sightings => {
-    var tr = tableBody.append("tr");
-    Object.entries(sightings).forEach(function([key, value]) {
-      tr.append("td").text(value);
+  // Define input source
+  var inputValue = d3.select("#datetime").property("value");
+
+  // Pass the user-entered date to the filtering function
+  filteredData = filterData(inputValue);
+
+  console.log(filteredData)
+
+  // Check for no results
+  if(filteredData.length == 0) { console.log("Response is null") }
+
+  else {
+    // Iterate through each row of the data, and add it to the page's data table
+    filteredData.forEach(sightings => {
+      var tr = tableBody.append("tr");
+      Object.entries(sightings).forEach(function([key, value]) {
+        tr.append("td").text(value);
+      });
     });
-  });
+  }
+}
+
+// Filters the source data, based on a supplied date
+function filterData(date) {
+  console.log(`The date supplied for filtering is ${date}`);
+  var filteredData = data.filter(sighting => sighting.datetime === date);
+  console.log(`The filtered data is: ${filteredData}`);
+  return filteredData;
 }
 
 // Button click event
 button.on("click", handleClick);
-
-//Date input event
-inputField.on("change", function() {
-  var newText = d3.event.target.value;
-  console.log(`New date entered: ${newText}`);
-});
