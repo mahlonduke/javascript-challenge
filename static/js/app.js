@@ -9,6 +9,10 @@ column to find rows that match user input.
 // from data.js
 var tableData = data;
 var tableBody = d3.select("tbody");
+var tableMain = d3.select("table");
+
+// Define table header
+var tableHeaders = ["Date", "City", "State", "Country", "Shape", "Duration", "Comments"];
 
 // Define input sources
 var button = d3.select("#filter-btn");
@@ -26,10 +30,37 @@ function handleClick(date) {
 
   console.log(filteredData)
 
-  // Check for no results
-  if(filteredData.length == 0) { console.log("Response is null") }
+  // Check for empty results
+  if(filteredData.length == 0)
+  /* Method to just print the result to console
+  { console.log("Response is null") }
+  */
+  {
 
+    // Remove the existing rows
+    d3.select("thead").remove();
+    d3.selectAll("tr").remove();
+
+    var tr = tableBody.append("tr");
+    var td = tr.append("td").text("No results");
+  }
+
+  // Results contains data.  Display it.
   else {
+
+    // Remove existing rows
+    d3.select("thead").remove();
+    d3.selectAll("tr").remove();
+
+    // Re-create the table header
+    tableMain.append("thead");
+    var tableHead = d3.select("thead");
+
+    // Add header cells to the header row
+    tableHeaders.forEach(header => {
+      var th =tableHead.append(header);
+    });
+
     // Iterate through each row of the data, and add it to the page's data table
     filteredData.forEach(sightings => {
       var tr = tableBody.append("tr");
