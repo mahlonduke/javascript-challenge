@@ -22,6 +22,9 @@ var inputText = inputElement.text();
 
 // Click handler
 function handleClick(date) {
+  // Prevent page from reloading
+  d3.event.preventDefault();
+
   // Define input source
   var inputValue = d3.select("#datetime").property("value");
 
