@@ -20,10 +20,23 @@ var inputElement = d3.select("#datetime");
 var inputHTML = inputElement.html();
 var inputText = inputElement.text();
 
+
+// Load initial data into the table
+function loadDefaultData() {
+
+  // Iterate through each row of the data, and add it to the page's data table
+  tableData.forEach(sightings => {
+    var tr = tableBody.append("tr");
+    Object.entries(sightings).forEach(function([key, value]) {
+      tr.append("td").text(value);
+    });
+  });
+  
+}
+
+
 // Click handler
 function handleClick(date) {
-  // Prevent page from reloading
-  d3.event.preventDefault();
 
   // Define input source
   var inputValue = d3.select("#datetime").property("value");
